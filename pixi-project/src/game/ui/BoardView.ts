@@ -70,7 +70,7 @@ export class BoardView {
 
     const board = this.controller.getBoard();
     const waveManager = this.controller.getWaveManager();
-    
+
     for (let r = 0; r < BOARD_SIZE; r++) {
       for (let c = 0; c < BOARD_SIZE; c++) {
         const piece = board[r][c];
@@ -108,10 +108,10 @@ export class BoardView {
         this.selection.visible = true;
         this.selection.x = sel.col * TILE;
         this.selection.y = sel.row * TILE;
-        
+
         // Make sure the selection is on top by bringing it to front
         this.highlightLayer.setChildIndex(this.selection, this.highlightLayer.children.length - 1);
-        
+
         this.showValidMoves(); // Show valid moves for selected piece
       } else {
         this.selection.visible = false;
@@ -129,7 +129,7 @@ export class BoardView {
     if (!waveManager.isWaveActive()) return;
 
     const targets = waveManager.getTargets();
-    
+
     for (const target of targets) {
       // Create pulsing red overlay for danger tiles
       const dangerTile = new Graphics();
@@ -144,7 +144,7 @@ export class BoardView {
       const minAlpha = 0.1; // More dramatic fade out
       const maxAlpha = 0.8; // Much brighter peak
       let increasing = true;
-      
+
       const animate = () => {
         if (increasing) {
           dangerTile.alpha += pulseSpeed;
@@ -224,7 +224,7 @@ export class BoardView {
         if (board[r][c] !== null) continue;
 
         // Check if this is a valid move
-        const boardAsPieces = board as unknown as import('../pieces/Piece').Piece[][];
+        const boardAsPieces = board as unknown as import('../pieces/piece').Piece[][];
         if (selectedPiece.isValidMove(r, c, boardAsPieces)) {
           // Create a valid move indicator
           const moveIndicator = new Graphics();
@@ -233,7 +233,7 @@ export class BoardView {
           moveIndicator.endFill();
           moveIndicator.x = c * TILE;
           moveIndicator.y = r * TILE;
-          
+
           this.highlightLayer.addChild(moveIndicator);
         }
       }

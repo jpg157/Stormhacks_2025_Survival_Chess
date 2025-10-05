@@ -1,5 +1,5 @@
 // Ensure the path is correct and the file exists
-import { Piece } from '../pieces/Piece';
+import { Piece } from '../pieces/piece';
 import { GameBoard } from '../game_board/GameBoard';
 import { WaveManager } from './WaveManager';
 

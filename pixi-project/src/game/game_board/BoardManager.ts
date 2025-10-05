@@ -1,4 +1,4 @@
-import { Piece } from '../pieces/Piece';
+import { Piece } from '../pieces/piece';
 import { Bishop } from '../pieces/Bishop';
 import { Knight } from '../pieces/Knight';
 import { Queen } from '../pieces/Queen';

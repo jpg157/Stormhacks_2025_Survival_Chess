@@ -1,4 +1,4 @@
-import { Piece } from '../pieces/Piece';
+import { Piece } from '../pieces/piece';
 import { GameBoard } from '../game_board/GameBoard';
 
 export interface TargetedPiece {
@@ -24,7 +24,7 @@ export class WaveManager {
   private totalTime: number = 10; // 10 seconds per wave initially
   private timer: number | null = null;
   private livesRemaining: number = 3; // Player starts with 3 lives
-  
+
   // Callbacks for game events
   private onWaveStartCallback?: (wave: WaveData) => void;
   private onWaveEndCallback?: (success: boolean, wave: WaveData) => void;
@@ -92,7 +92,7 @@ export class WaveManager {
 
     this.currentWave++;
     this.selectRandomTargets();
-    
+
     // Set time based on number of targets: 2 targets = 15s, 3 targets = 20s, 4 targets = 30s
     const baseTime = this.getTimeForTargets(this.targets.length);
     // Optional: slightly reduce time as waves progress for increased difficulty
@@ -216,7 +216,7 @@ export class WaveManager {
       // Lose a life
       this.livesRemaining--;
       this.onLifeLostCallback?.(this.livesRemaining);
-      
+
       if (this.livesRemaining <= 0) {
         // Game over - no lives left
         this.isActive = false;
