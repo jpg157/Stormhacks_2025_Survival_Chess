@@ -1,17 +1,20 @@
-import { Sprite } from "pixi.js";
+import { Assets, Sprite } from "pixi.js";
+import { PieceType } from "../enums/PieceType";
 
 export class PieceUi {
   private row: number;
   private col: number;
   private sprite: Sprite;
   
-  constructor(row: number, col: number) {
+  constructor(row: number, col: number, pieceType: PieceType) {
     this.row = row;
     this.col = col;
 
     const label: string = `Piece ${row} ${col}`;
 
     this.sprite = new Sprite({ label: label, anchor: 0.5 });
+    const texture = Assets.get(pieceType);
+    this.sprite.texture = texture;
   }
 
   getRow(): number {
