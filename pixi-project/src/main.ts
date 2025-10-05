@@ -12,7 +12,7 @@ import { AssetManager } from "./managers/AssetManager";
   // Append the application canvas to the document body
   document.getElementById("pixi-container")!.appendChild(app.canvas);
 
-  const game: Game = new Game();
+  // const game: Game = new Game();
 
   const am = await new AssetManager().init();
 
