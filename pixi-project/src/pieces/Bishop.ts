@@ -1,4 +1,4 @@
-import { Piece } from '../piece';
+import { Piece } from './Piece';
 
 /**
  * The Bishop class represents a chess-like piece in the SurviChess game.
