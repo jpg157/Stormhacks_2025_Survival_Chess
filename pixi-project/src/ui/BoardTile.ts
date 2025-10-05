@@ -12,7 +12,8 @@ export class BoardTile {
     this.color = color;
     const label: string = "Tile`${row} ${col}`";
     // @@TODO: set texture based on color
-    this.sprite = new Sprite({label: label});
+    this.sprite = new Sprite({label: label, anchor: 0.5, });
+    this.sprite.getChildByLabel(label);
   }
 
   getRow(): number {
