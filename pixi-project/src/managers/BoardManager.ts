@@ -13,19 +13,13 @@ export class BoardManager {
 
   private readonly pieceManager: PieceManager;
   private readonly   board: Board;
-  private readonly center: number;
+  private static readonly center: number = Math.floor(BoardManager.BOARD_SIZE / 2);
 
   constructor() {
     this.pieceManager = new PieceManager();
     this.board = new Board(BoardManager.BOARD_SIZE, BoardManager.BOARD_SIZE);
     this.populateBoard()
-    this.center = Math.floor(BoardManager.BOARD_SIZE / 2);
   }
-
-  // generateBoard(board: Board): void {
-
-  //   // this.pieceManager.createPiece();
-  // }
 
   getBoardData(): Tile[][] {
     return this.board.getBoard();
@@ -41,25 +35,23 @@ export class BoardManager {
       PieceType.KNIGHT,
       PieceType.ROOK,
       PieceType.BISHOP,
-      PieceType.STAG
+      PieceType.STAG,
+      PieceType.TRIDENT,
     ];
+    // Track how many of each piece type have been placed
+    this.board.getBoard()[BoardManager.center][BoardManager.center].setPiece(null);
+    const pieceCounts = new Array(availablePieces.length).fill(0);
 
     // Place tridents first.
     this.placeTwoDarkTridentPieces();
     this.placeTwoLightTridentPieces();
 
     let failed = false;
-    const pieceCounts = new Array(availablePieces.length).fill(0);
-
+    
     for (let i = 0; i < BoardManager.BOARD_SIZE && !failed; i++) {
       for (let j = 0; j < BoardManager.BOARD_SIZE && !failed; j++) {
-        if (i == this.center && j == this.center) {
-          continue;
-        }
-
-        if (gameBoard[i][j] !== null && (i === BoardManager.START_TILE[0] && j === BoardManager.START_TILE[1])) {
-          continue;
-        }
+        if (i == BoardManager.center && j == BoardManager.center) continue;
+        
 
         let placed: Piece | null = null;
         let attempts = 0;
@@ -68,11 +60,12 @@ export class BoardManager {
           attempts++;
           const randomIndex = Math.floor(Math.random() * availablePieces.length);
           const selectedPieceType = availablePieces[randomIndex];
-          placed = this.pieceManager.createPiece(selectedPieceType, i, j);
 
           if (pieceCounts[randomIndex] >= NUM_PIECE_PER_TYPE_ALLOWED) {
             continue;
           }
+          placed = this.pieceManager.createPiece(selectedPieceType, i, j);
+          pieceCounts[randomIndex]++;
         }
         
         if (!placed) {
@@ -182,34 +175,6 @@ export class BoardManager {
 
       return piece;
     });
-  }
-
-  updateBoardDisplay(board: Board) : void {
-    const gameBoard: Tile[][] = board.getBoard();
-
-    for (let i = 0; i < gameBoard.length; i++) {
-      for (let j = 0; j < gameBoard[j].length; j++) {
-        const piece = gameBoard[i][j];
-        if (piece) {
-          console.log(`Piece at (${i}, ${j}): ${piece.constructor.name}`);
-        } else {
-          console.log(`No piece at (${i}, ${j})`);
-        }
-      }
-    }
-  }
-
-  handleTileClick(row: number, col: number, board: Board): void {
-    const piece = board.getBoard()[row][col].getPiece();
-    if (piece) {
-      console.log(`Clicked on piece at (${row}, ${col}): ${piece.constructor.name}`);
-      // Additional logic for handling piece selection or movement can be added here
-    } else {
-      console.log(`Clicked on empty tile at (${row}, ${col})`);
-      // Additional logic for handling empty tile clicks can be added here
-    }
-
-    this.updateBoardDisplay(board);
   }
 
 }
