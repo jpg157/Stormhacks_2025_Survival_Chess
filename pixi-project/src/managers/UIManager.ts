@@ -3,6 +3,7 @@ import { AssetManager } from "./AssetManager";
 import { BoardContainer } from "../ui/containers/BoardContainer";
 import { TutorialContainer } from "../ui/containers/TutorialContainer";
 import { Tile } from "../game-logic/Tile";
+import { BackgroundContainer } from "../ui/containers/BackgroundContainer";
 
 export class UIManager {
 
@@ -22,7 +23,7 @@ export class UIManager {
     // RENDER UI
 
     // MAIN CONTAINER
-    const mainContainer = new Container();
+    const mainContainer = new BackgroundContainer();
 
     // BOARD CONTAINER
     const boardContainer = new BoardContainer(boardData);
@@ -31,8 +32,8 @@ export class UIManager {
     const tutorialContainer = new TutorialContainer();
 
     // APPEND TO MAIN CONTAINER
-    mainContainer.addChild(boardContainer.getContainer());
-    mainContainer.addChild(tutorialContainer.getContainer());
+    mainContainer.getContainer().addChild(boardContainer.getContainer());
+    mainContainer.getContainer().addChild(tutorialContainer.getContainer());
 
     // const dict = await assetManager.getAssets();
 
@@ -56,6 +57,6 @@ export class UIManager {
   // }
   // TEMP - to debug assets
 
-    app.stage.addChild(mainContainer);
+    app.stage.addChild(mainContainer.getContainer());
   }
 }

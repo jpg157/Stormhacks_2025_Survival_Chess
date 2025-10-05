@@ -1,5 +1,4 @@
 import { Application } from "pixi.js";
-import { AssetManager } from "./managers/AssetManager";
 import { GameManager } from "./managers/GameManager";
 
 (async () => {
