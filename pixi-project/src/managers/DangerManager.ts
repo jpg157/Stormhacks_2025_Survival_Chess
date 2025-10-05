@@ -1,3 +1,1 @@
-export class DangerManager {
-  
-}
+export class DangerManager {}

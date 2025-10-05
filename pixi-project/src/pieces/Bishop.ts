@@ -1,45 +1,49 @@
-import { Piece } from './Piece';
+import { Piece } from "./Piece";
 
 /**
  * The Bishop class represents a chess-like piece in the SurviChess game.
  * The Bishop can move exactly one step diagonally to an empty square.
  */
 export class Bishop extends Piece {
-    private static readonly MAX_SQUARE_MOVE = 1;
+  private static readonly MAX_SQUARE_MOVE = 1;
 
-    constructor(row: number, col: number) {
-        super(row, col);
+  constructor(row: number, col: number) {
+    super(row, col);
+  }
+
+  /**
+   * Determines whether the Bishop's move to the specified row and column is valid.
+   * The Bishop can move exactly one step diagonally to an empty square.
+   */
+  public isValidMove(
+    newRow: number,
+    newCol: number,
+    board: Piece[][],
+  ): boolean {
+    // Check bounds
+    if (!this.isWithinBounds(newRow, newCol, board)) {
+      return false;
     }
 
-    /**
-     * Determines whether the Bishop's move to the specified row and column is valid.
-     * The Bishop can move exactly one step diagonally to an empty square.
-     */
-    public isValidMove(newRow: number, newCol: number, board: Piece[][]): boolean {
-        // Check bounds
-        if (!this.isWithinBounds(newRow, newCol, board)) {
-            return false;
-        }
+    // Calculate the difference in rows and columns
+    const rowDiff = Math.abs(newRow - this.getRow());
+    const colDiff = Math.abs(newCol - this.getCol());
 
-        // Calculate the difference in rows and columns
-        const rowDiff = Math.abs(newRow - this.getRow());
-        const colDiff = Math.abs(newCol - this.getCol());
-
-        // Check if the move is exactly one step diagonally
-        if (
-            rowDiff === Bishop.MAX_SQUARE_MOVE &&
-            colDiff === Bishop.MAX_SQUARE_MOVE
-        ) {
-            return board[newRow][newCol] === null; // must move into empty tile
-        }
-
-        return false; // Any other move is invalid
+    // Check if the move is exactly one step diagonally
+    if (
+      rowDiff === Bishop.MAX_SQUARE_MOVE &&
+      colDiff === Bishop.MAX_SQUARE_MOVE
+    ) {
+      return board[newRow][newCol] === null; // must move into empty tile
     }
 
-    /**
-     * Returns the type of the piece as a single-character string.
-     */
-    public getType(): string {
-        return "B";
-    }
+    return false; // Any other move is invalid
+  }
+
+  /**
+   * Returns the type of the piece as a single-character string.
+   */
+  public getType(): string {
+    return "B";
+  }
 }

@@ -25,9 +25,9 @@ export class AssetManager {
         assetPath = `${ConstantsAssetManager.ASSET_LOAD_PATH}${assetName}_coloured.png`;
         texture = await Assets.load(assetPath);
         this.assetsDict[`${assetName}_coloured`.toUpperCase()] = new Sprite(
-          texture
+          texture,
         );
-      }
+      },
     );
 
     // Wait for all loads to complete

@@ -7,5 +7,4 @@ export interface Player {
   score: number;
 }
 
-const playerSource = new LocalStorageDataSource<Player>('players');
-
+const playerSource = new LocalStorageDataSource<Player>("players");
