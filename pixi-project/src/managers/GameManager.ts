@@ -133,20 +133,20 @@ export class GameManager {
 
 
     for (let i = 0; i < TARGET_BLOCK_LENGTH; i++) {
-    const row: Piece[] = []
+      const row: Piece[] = []
 
-    for (let j = 0; j < TARGET_BLOCK_LENGTH; j++) {
-      const dark = this.isDarkSquare(i, j)
-      const type = this.pickPiece(dark, counts, darkLight)
-      const piece = this.createPiece(type, i, j);
-      if (piece) {
-        row.push(piece);
+      for (let j = 0; j < TARGET_BLOCK_LENGTH; j++) {
+        const dark = this.isDarkSquare(i, j)
+        const type = this.pickPiece(dark, counts, darkLight)
+        const piece = this.createPiece(type, i, j);
+        if (piece) {
+          row.push(piece);
+        }
       }
+
+      block.push(row);
     }
 
-    block.push(row)
-  }
-
-  return block
+  return block;
 }
 }
