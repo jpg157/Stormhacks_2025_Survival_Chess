@@ -1,4 +1,4 @@
-import { Piece } from '../Piece';
+import { Piece } from './piece';
 
 /**
  * The Knight class represents a chess-like piece in the SurviChess game.
