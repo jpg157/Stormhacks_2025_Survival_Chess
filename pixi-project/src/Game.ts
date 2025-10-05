@@ -10,4 +10,10 @@ export class Game {
     this.#board = new Board();
     this.#gameManager = new GameManager();
   }
+
+  start(): void {
+    console.log("Game started");
+    // Additional game start logic here
+    this.#gameManager.generateTargetBlock();
+  }
 }
