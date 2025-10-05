@@ -4,7 +4,7 @@ import { Piece } from "../pieces/Piece";
 import { PieceManager } from "./PieceManager";
 
 export class BoardManager {
-  private static START_TILE = [2][2];
+  private static readonly START_TILE: [number, number] = [2, 2];
   private static BOARD_SIZE = 5;
   private static EVEN_DIVISOR = 2;
 
@@ -24,6 +24,7 @@ export class BoardManager {
   //   // this.pieceManager.createPiece();
   // }
 
+  // help me randomly place pieces on the board that are not already occupied and not the start tile
   populateBoard(board: Board): void {
     const gameBoard: Piece[][] | null[][] = board.getBoard();
 
@@ -35,16 +36,20 @@ export class BoardManager {
         if (i == 2 && j == 2) {
           continue;
         }
+
+        if (gameBoard[i][j] !== null && (i === BoardManager.START_TILE[0] && j === BoardManager.START_TILE[1])) {
+          continue;
+        }
         
-        
-        
-        // const gridPos = [i, j];
-        // if (gridPos.length === BoardManager.INVALID_INIT_PIECE_POSITION.length && gridPos.every((v, k) => v === BoardManager.INVALID_INIT_PIECE_POSITION[k])) {
-          
-        // }
+        // Place other pieces randomly on the board
+        const pieceTypes = [PieceType.STAG, PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN];
+        const randomIndex = Math.floor(Math.random() * pieceTypes.length);
+        const selectedPieceType = pieceTypes[randomIndex];
+        const piece = this.pieceManager.createPiece(selectedPieceType, i, j);
+        board.getBoard()[i][j] = piece;
+
       }
     }
-    this.pieceManager.createPiece();
   }
 
   private isDarkSquare(row: number, col: number): boolean {
@@ -128,11 +133,33 @@ export class BoardManager {
   }
 
   updateBoardDisplay(board: Board) : void {
+    const gameBoard: Piece[][] | null[][] = board.getBoard();
+
+    for (let i = 0; i < gameBoard.length; i++) {
+      for (let j = 0; j < gameBoard[j].length; j++) {
+        const piece = gameBoard[i][j];
+        if (piece) {
+          console.log(`Piece at (${i}, ${j}): ${piece.constructor.name}`);
+        } else {
+          console.log(`No piece at (${i}, ${j})`);
+        }
+      }
+    }
 
   }
 
   handleTileClick(row: number, col: number, board: Board): void {
+    const piece = board.getBoard()[row][col];
+    if (piece) {
+      console.log(`Clicked on piece at (${row}, ${col}): ${piece.constructor.name}`);
+      // Additional logic for handling piece selection or movement can be added here
+    } else {
+      console.log(`Clicked on empty tile at (${row}, ${col})`);
+      // Additional logic for handling empty tile clicks can be added here
+    }
 
+    this.updateBoardDisplay(board);
+    
   }
 
 }
