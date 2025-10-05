@@ -3,12 +3,12 @@ import { DangerManager } from "./DangerManager";
 
 export class GameManager {
 
-  #boardManager: BoardManager
-  #dangerManager: DangerManager
+  private boardManager: BoardManager
+  private dangerManager: DangerManager
 
   constructor() {
-    this.#boardManager = new BoardManager();
-    this.#dangerManager = new DangerManager();
+    this.boardManager = new BoardManager();
+    this.dangerManager = new DangerManager();
   }
 
   getPlayerHp(): number {

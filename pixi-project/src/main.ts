@@ -1,4 +1,5 @@
 import { Application, Assets, Sprite } from "pixi.js";
+import { Game } from "./game-logic/Game";
 
 (async () => {
   // Create a new application
@@ -10,7 +11,7 @@ import { Application, Assets, Sprite } from "pixi.js";
   // Append the application canvas to the document body
   document.getElementById("pixi-container")!.appendChild(app.canvas);
 
-  
+  const game: Game = new Game();
 
   // Load the bunny texture
   // const texture = await Assets.load("/assets/bunny.png");
