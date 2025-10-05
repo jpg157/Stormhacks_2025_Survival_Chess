@@ -170,7 +170,7 @@ export function updateBoardDisplay(): void {
 
 // ===== 5) handleTileClick(row, col) =====
 export function handleTileClick(row: number, col: number): void {
-  const board = game.getBoardData();
+  const board = (game.getBoardData());
   
   // If nothing is selected yet
   if (!selected) {
@@ -215,7 +215,7 @@ export function handleTileClick(row: number, col: number): void {
   }
 
   // If clicked another piece, switch selection
-  if (board[row][col]) {
+  if (board[row][col].getPiece()) {
     selected = { row, col };
     updateBoardDisplay();
     return;
