@@ -1,3 +1,5 @@
+import { Tile } from "../game-logic/Tile";
+
 const EVEN_DIVISOR = 2;
 
 /**
@@ -31,7 +33,7 @@ export abstract class Piece {
   public abstract isValidMove(
     newRow: number,
     newCol: number,
-    board: Piece[][],
+    board: Tile[][],
   ): boolean;
 
   /**
@@ -46,7 +48,7 @@ export abstract class Piece {
   /**
    * Bounds check helper.
    */
-  public isWithinBounds(row: number, col: number, board: Piece[][]): boolean {
+  public isWithinBounds(row: number, col: number, board: Tile[][]): boolean {
     return row >= 0 && row < board.length && col >= 0 && col < board[0].length;
   }
 

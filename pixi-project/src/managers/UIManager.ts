@@ -1,8 +1,8 @@
 import { Application, Container } from "pixi.js";
-import { Piece } from "../pieces/Piece";
 import { AssetManager } from "./AssetManager";
 import { BoardContainer } from "../ui/containers/BoardContainer";
 import { TutorialContainer } from "../ui/containers/TutorialContainer";
+import { Tile } from "../game-logic/Tile";
 
 export class UIManager {
 
@@ -14,7 +14,7 @@ export class UIManager {
 
   renderGame(
     app: Application, 
-    boardData: Piece[][] | null[][]
+    boardData: Tile[][]
   ) {
     const assetManager = new AssetManager();
     assetManager.init();

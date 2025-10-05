@@ -1,3 +1,4 @@
+import { Tile } from "../game-logic/Tile";
 import { Piece } from "./Piece";
 
 /**
@@ -21,7 +22,7 @@ export class Knight extends Piece {
   public isValidMove(
     newRow: number,
     newCol: number,
-    board: Piece[][],
+    board: Tile[][],
   ): boolean {
     // Check bounds
     if (!this.isWithinBounds(newRow, newCol, board)) {
@@ -37,7 +38,7 @@ export class Knight extends Piece {
       (rowDiff === Knight.JUMP && colDiff === Knight.MOVE) ||
       (rowDiff === Knight.MOVE && colDiff === Knight.JUMP)
     ) {
-      return board[newRow][newCol] === null; // must move into empty tile
+      return (board[newRow][newCol].getPiece() === null); // must move into empty tile
     }
 
     return false; // Any other move is invalid

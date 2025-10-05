@@ -1,5 +1,6 @@
 import { PieceType } from "../enums/PieceType";
 import { Board } from "../game-logic/Board";
+import { Tile } from "../game-logic/Tile";
 import { Piece } from "../pieces/Piece";
 import { PieceManager } from "./PieceManager";
 
@@ -26,13 +27,13 @@ export class BoardManager {
   //   // this.pieceManager.createPiece();
   // }
 
-  getBoardData(): Piece[][] | null[][] {
+  getBoardData(): Tile[][] {
     return this.board.getBoard();
   }
 
   // help me randomly place pieces on the board that are not already occupied and not the start tile
   populateBoard(): void {
-    const gameBoard: Piece[][] | null[][] = this.board.getBoard();
+    const gameBoard: Tile[][] = this.board.getBoard();
 
     const availablePieces: PieceType[] = [
       PieceType.QUEEN,
@@ -76,7 +77,7 @@ export class BoardManager {
         if (!placed) {
           failed = true;
         } else {
-          this.board.getBoard()[i][j] = placed;
+          this.board.getBoard()[i][j].setPiece(placed);
         }
 
       }
@@ -140,7 +141,7 @@ export class BoardManager {
 
     for (const [selectedRow, selectedCol] of selected) {
         const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
-        this.board.getBoard()[selectedRow][selectedCol] = piece;
+        this.board.getBoard()[selectedRow][selectedCol].setPiece(piece);
         return piece; 
     }
   }
@@ -161,13 +162,13 @@ export class BoardManager {
 
     for (const [selectedRow, selectedCol] of selected) {
       const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
-      this.board.getBoard()[selectedRow][selectedCol] = piece;
+      this.board.getBoard()[selectedRow][selectedCol].setPiece(piece);
       return piece;
     }
   }
 
   updateBoardDisplay(board: Board) : void {
-    const gameBoard: Piece[][] | null[][] = board.getBoard();
+    const gameBoard: Tile[][] = board.getBoard();
 
     for (let i = 0; i < gameBoard.length; i++) {
       for (let j = 0; j < gameBoard[j].length; j++) {
@@ -182,7 +183,7 @@ export class BoardManager {
   }
 
   handleTileClick(row: number, col: number, board: Board): void {
-    const piece = board.getBoard()[row][col];
+    const piece = board.getBoard()[row][col].getPiece();
     if (piece) {
       console.log(`Clicked on piece at (${row}, ${col}): ${piece.constructor.name}`);
       // Additional logic for handling piece selection or movement can be added here

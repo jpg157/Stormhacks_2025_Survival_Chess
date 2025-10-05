@@ -1,10 +1,11 @@
 import { Container, Sprite } from "pixi.js";
 import { Piece } from "../../pieces/Piece";
+import { Tile } from "../../game-logic/Tile";
 
 export class BoardContainer {
   private container: Container;
 
-  constructor(boardData: Piece[][] | null[][]) {
+  constructor(boardData: Tile[][]) {
     this.container = new Container();
   }
 

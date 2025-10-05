@@ -1,3 +1,4 @@
+import { Tile } from "../game-logic/Tile";
 import { Piece } from "./Piece";
 
 /**
@@ -19,7 +20,7 @@ export class Trident extends Piece {
   public isValidMove(
     newRow: number,
     newCol: number,
-    board: Piece[][],
+    board: Tile[][],
   ): boolean {
     // Check bounds
     if (!this.isWithinBounds(newRow, newCol, board)) {

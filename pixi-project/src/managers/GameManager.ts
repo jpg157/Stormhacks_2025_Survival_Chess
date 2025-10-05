@@ -4,6 +4,7 @@ import { LocalStorageDataSource } from "../player/LocalStorageDataSource";
 import { Application } from "pixi.js";
 import { UIManager } from "./UIManager";
 import { Piece } from "../pieces/Piece";
+import { Tile } from "../game-logic/Tile";
 
 interface Player {
   id: string;
@@ -35,7 +36,7 @@ export class GameManager {
   startGame(app: Application) {
     this.boardManager.populateBoard();
 
-    const boardData: Piece[][] | null[][] = this.boardManager.getBoardData();
+    const boardData: Tile[][] = this.boardManager.getBoardData();
     
     this.uiManager.renderGame(app, boardData);
   }
