@@ -1,5 +1,5 @@
 // src/game/pieces/Rook.ts
-import { Piece } from '../piece';
+import { Piece } from './Piece';
 
 /**
  * The Rook class represents a chess-like piece in the SurviChess game.

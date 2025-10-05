@@ -1,4 +1,4 @@
-import { Piece } from '../piece';
+import { Piece } from './Piece';
 
 /**
  * The Queen class represents a chess-like piece in the SurviChess game.
