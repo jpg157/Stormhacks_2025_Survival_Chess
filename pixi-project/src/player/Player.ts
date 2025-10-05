@@ -1,6 +1,6 @@
 import { LocalStorageDataSource } from "./LocalStorageDataSource";
 
-interface Player {
+export interface Player {
   id: string;
   name: string;
   hitpoints: number;
