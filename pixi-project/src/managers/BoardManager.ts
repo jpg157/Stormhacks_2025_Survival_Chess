@@ -11,9 +11,8 @@ export class BoardManager {
   private static BOARD_SIZE = 5;
   private static EVEN_DIVISOR = 2;
 
-  private pieceManager: PieceManager;
-
-  public readonly board: Board;
+  private readonly pieceManager: PieceManager;
+  private readonly   board: Board;
   private readonly center: number;
 
   constructor() {
