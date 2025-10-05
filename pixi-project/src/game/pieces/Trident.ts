@@ -1,4 +1,4 @@
-import { Piece } from '../piece';
+import { Piece } from "../Piece";
 
 /**
  * The Trident class represents a unique type of chess-like piece in the SurviChess game.
