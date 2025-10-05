@@ -3,6 +3,8 @@ import { Board } from "../game-logic/Board";
 import { Piece } from "../pieces/Piece";
 import { PieceManager } from "./PieceManager";
 
+const NUM_PIECE_PER_TYPE_ALLOWED = 4;
+
 export class BoardManager {
   private static readonly START_TILE: [number, number] = [2, 2];
   private static BOARD_SIZE = 5;
@@ -10,13 +12,14 @@ export class BoardManager {
 
 
   private pieceManager: PieceManager;
-  
-  private board: Board;
-  // private pieceTypePool: Set<Piece>;
+
+  public readonly board: Board;
+  private readonly center: number;
 
   constructor() {
     this.pieceManager = new PieceManager();
-      this.board = new Board(BoardManager.BOARD_SIZE, BoardManager.BOARD_SIZE);
+    this.board = new Board(BoardManager.BOARD_SIZE, BoardManager.BOARD_SIZE);
+    this.center = Math.floor(BoardManager.BOARD_SIZE / 2);
   }
 
   // generateBoard(board: Board): void {
@@ -25,30 +28,58 @@ export class BoardManager {
   // }
 
   // help me randomly place pieces on the board that are not already occupied and not the start tile
-  populateBoard(board: Board): void {
-    const gameBoard: Piece[][] | null[][] = board.getBoard();
+  populateBoard(): void {
+    const gameBoard: Piece[][] | null[][] = this.board.getBoard();
 
+    const availablePieces: PieceType[] = [
+      PieceType.QUEEN,
+      PieceType.KNIGHT,
+      PieceType.ROOK,
+      PieceType.BISHOP,
+      PieceType.STAG
+    ];
+
+    // Place tridents first.
     this.placeTwoDarkTridentPieces();
     this.placeTwoLightTridentPieces();
 
-    for (let i = 0; i < gameBoard.length; i++) {
-      for (let j = 0; j < gameBoard[j].length; j++) {
-        if (i == 2 && j == 2) {
+    let failed = false;
+    const pieceCounts = new Array(availablePieces.length).fill(0);
+
+    for (let i = 0; i < BoardManager.BOARD_SIZE && !failed; i++) {
+      for (let j = 0; j < BoardManager.BOARD_SIZE && !failed; j++) {
+        if (i == this.center && j == this.center) {
           continue;
         }
 
         if (gameBoard[i][j] !== null && (i === BoardManager.START_TILE[0] && j === BoardManager.START_TILE[1])) {
           continue;
         }
+
+        let placed: Piece | null = null;
+        let attempts = 0;
+
+        while (!placed && attempts < 10) {
+          attempts++;
+          const randomIndex = Math.floor(Math.random() * availablePieces.length);
+          const selectedPieceType = availablePieces[randomIndex];
+          placed = this.pieceManager.createPiece(selectedPieceType, i, j);
+
+          if (pieceCounts[randomIndex] >= NUM_PIECE_PER_TYPE_ALLOWED) {
+            continue;
+          }
+        }
         
-        // Place other pieces randomly on the board
-        const pieceTypes = [PieceType.STAG, PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP, PieceType.QUEEN];
-        const randomIndex = Math.floor(Math.random() * pieceTypes.length);
-        const selectedPieceType = pieceTypes[randomIndex];
-        const piece = this.pieceManager.createPiece(selectedPieceType, i, j);
-        board.getBoard()[i][j] = piece;
+        if (!placed) {
+          failed = true;
+        } else {
+          this.board.getBoard()[i][j] = placed;
+        }
 
       }
+    }
+    if (!failed) {
+      return;
     }
   }
 
