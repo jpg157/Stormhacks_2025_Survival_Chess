@@ -1,5 +1,6 @@
-import { Application, Assets, Sprite } from "pixi.js";
+import { Application } from "pixi.js";
 import { Game } from "./game-logic/Game";
+import { AssetManager } from "./managers/AssetManager";
 
 (async () => {
   // Create a new application
@@ -13,26 +14,29 @@ import { Game } from "./game-logic/Game";
 
   const game: Game = new Game();
 
-  // Load the bunny texture
-  // const texture = await Assets.load("/assets/bunny.png");
+  const am = await new AssetManager().init();
 
-  // // Create a bunny Sprite
-  // const bunny = new Sprite(texture);
+  const dict = am.getAssets();
 
-  // // Center the sprite's anchor point
-  // bunny.anchor.set(0.5);
+  // TEMP - to debug assets
+  const spriteSize = 64; // replace with your actual sprite size
+  const columns = 5;
+  const padding = 30;
+  let i = 0;
 
-  // // Move the sprite to the center of the screen
-  // bunny.position.set(app.screen.width / 2, app.screen.height / 2);
+  for (const key in dict) {
+    const sprite = dict[key];
 
-  // Add the bunny to the stage
-  // app.stage.addChild(bunny);
+    const row = Math.floor(i / columns);
+    const col = i % columns;
 
-  // Listen for animate update
-  app.ticker.add((time) => {
-    // Just for fun, let's rotate mr rabbit a little.
-    // * Delta is 1 if running at 100% performance *
-    // * Creates frame-independent transformation *
-    // bunny.rotation += 0.1 * time.deltaTime;
-  });
+    sprite.x = col * (spriteSize + padding);
+    sprite.y = row * (spriteSize + padding);
+
+    app.stage.addChild(sprite);
+    i++;
+  }
+  // TEMP - to debug assets
+
+  // app.stage.addChild(sprite);
 })();
