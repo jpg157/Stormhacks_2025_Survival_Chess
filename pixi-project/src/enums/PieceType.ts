@@ -5,6 +5,7 @@ export enum PieceType {
   KNIGHT = "assets/pieces/knight.png",
   STAG = "assets/pieces/stag.png",
   TRIDENT = "assets/pieces/trident.png",
+  map = "map",
 }
 
 export enum PieceTypeColoured {

@@ -34,6 +34,9 @@ export class GameManager {
   }
 
   startGame(app: Application) {
+    console.log("starting application");
+    
+
     this.boardManager.populateBoard();
 
     const boardData: Tile[][] = this.boardManager.getBoardData();

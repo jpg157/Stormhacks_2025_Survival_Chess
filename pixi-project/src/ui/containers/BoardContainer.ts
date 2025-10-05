@@ -1,5 +1,4 @@
 import { Assets, Container, Sprite } from "pixi.js";
-import { Piece } from "../../pieces/Piece";
 import { Tile } from "../../game-logic/Tile";
 import { BoardTile } from "../BoardTile";
 import { PieceType } from "../../enums/PieceType";
@@ -14,8 +13,7 @@ export class BoardContainer {
       for (let col = 0; col < boardData[row].length; col++) {
         const logicBoardTile: Tile = boardData[row][col];
         const uiBoardTile: BoardTile = new BoardTile(row, col, logicBoardTile.getColor());
-        this.container.addChild(uiBoardTile.sprite);
-        // `tile${row}${col}`
+        this.container.addChild(uiBoardTile.getSprite());
       }
     }
   }

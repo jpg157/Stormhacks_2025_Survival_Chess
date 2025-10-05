@@ -32,6 +32,7 @@ export class BoardManager {
 
   // help me randomly place pieces on the board that are not already occupied and not the start tile
   populateBoard(): void {
+    console.log("populate board");
     const gameBoard: Tile[][] = this.board.getBoard();
 
     const availablePieces: PieceType[] = [
@@ -134,9 +135,10 @@ export class BoardManager {
       }
     }
 
-    const selectedCoordsOne = validDarkSquares [ Math.random() * validDarkSquares.length ];
-    const selectedCoordsTwo = validDarkSquares [ Math.random() * validDarkSquares.length ];
+    const selectedCoordsOne = validDarkSquares [ Math.floor(Math.random() * validDarkSquares.length) ];
+    const selectedCoordsTwo = validDarkSquares [ Math.floor(Math.random() * validDarkSquares.length) ];
     const selected = [selectedCoordsOne, selectedCoordsTwo];
+   
 
     for (const [selectedRow, selectedCol] of selected) {
         const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
@@ -155,15 +157,25 @@ export class BoardManager {
       }
     }
 
-    const selectedCoordsOne = validLightSquares[Math.random() * validLightSquares.length];
-    const selectedCoordsTwo = validLightSquares[Math.random() * validLightSquares.length];
+    const selectedCoordsOne = validLightSquares[Math.floor(Math.random() * validLightSquares.length)];
+    const selectedCoordsTwo = validLightSquares[Math.floor(Math.random() * validLightSquares.length)];
     const selected = [selectedCoordsOne, selectedCoordsTwo];
 
-    for (const [selectedRow, selectedCol] of selected) {
+    console.log("b4 for loop");
+
+
+    selected.forEach((coords) => {
+      console.log("in for loop");
+
+      const selectedRow = coords[0];
+      const selectedCol = coords[1];
+      
       const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
       this.board.getBoard()[selectedRow][selectedCol].setPiece(piece);
+
+      console.log("before return piece");
       return piece;
-    }
+    });
   }
 
   updateBoardDisplay(board: Board) : void {
