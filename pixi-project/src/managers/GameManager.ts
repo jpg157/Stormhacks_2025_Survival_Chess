@@ -24,31 +24,29 @@ const NUM_BISHOP_ARCHER_ALLOWED = 2
 
 export class GameManager {
 
-  #boardManager: BoardManager
-  #dangerManager: DangerManager
-  #playerSource: LocalStorageDataSource<Player>;
+  private playerSource: LocalStorageDataSource<Player>;
   private boardManager: BoardManager
   private dangerManager: DangerManager
 
   constructor() {
-    this.#boardManager = new BoardManager();
-    this.#dangerManager = new DangerManager();
-    this.#playerSource = new LocalStorageDataSource<Player>('players');
+    this.boardManager = new BoardManager();
+    this.dangerManager = new DangerManager();
+    this.playerSource = new LocalStorageDataSource<Player>('players');
 
     this.boardManager = new BoardManager();
     this.dangerManager = new DangerManager();
   }
 
   getPlayerHp(): number {
-    const playerData = this.#playerSource.getById('hitpoints');
+    const playerData = this.playerSource.getById('hitpoints');
     return playerData?.hitpoints ?? 0;
   }
 
   setPlayerHp(playerId: number, hp : number): void {
-    const playerData = this.#playerSource.getById(playerId);
+    const playerData = this.playerSource.getById(playerId);
     if (playerData) {
       playerData.hitpoints = hp;
-      this.#playerSource.update(playerId, playerData);
+      this.playerSource.update(playerId, playerData);
     }
   }
 

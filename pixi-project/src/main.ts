@@ -1,6 +1,6 @@
 import { Application } from "pixi.js";
-import { Game } from "./game-logic/Game";
 import { AssetManager } from "./managers/AssetManager";
+import { Game } from "./Game";
 
 (async () => {
   // Create a new application
