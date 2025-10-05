@@ -28,6 +28,7 @@ export class BoardManager {
     const gameBoard: Piece[][] | null[][] = board.getBoard();
 
     this.placeTwoDarkTridentPieces();
+    this.placeTwoLightTridentPieces();
 
     for (let i = 0; i < gameBoard.length; i++) {
       for (let j = 0; j < gameBoard[j].length; j++) {
@@ -50,12 +51,32 @@ export class BoardManager {
     return ((row + col) % BoardManager.EVEN_DIVISOR) === 0;
   }
 
+  private isLightSquare(row: number, col: number): boolean {
+    return ((row + col) % BoardManager.EVEN_DIVISOR) !== 0;
+  }
+
   private isValidTridentDarkSquare(row: number, col: number): boolean {
     if ( 
       (row === 2 && col === 0) || // west
       (row === 0 && col === 2) || // north
       (row === 2 && col === 4) || // east
       (row === 4 && col === 2)  // south
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  private isValidTridentLightSquare(row: number, col: number): boolean {
+    if (
+      (row === 1 && col === 2) ||
+      (row === 1 && col === 4) ||
+      (row === 2 && col === 1) ||
+      (row === 4 && col === 1) ||
+      (row === 5 && col === 2) ||
+      (row === 5 && col === 4) ||
+      (row === 2 && col === 5) ||
+      (row === 4 && col === 5)
     ) {
       return false;
     }
@@ -85,19 +106,26 @@ export class BoardManager {
     }
   }
 
-  private placeLightTridentPieces() {
-    
+  private placeTwoLightTridentPieces() {
+    const validLightSquares: [number, number][] = [];
+    for (let i = 0; i < BoardManager.BOARD_SIZE; i++) {
+      for (let j = 0; j < BoardManager.BOARD_SIZE; j++) {
+        if (this.isLightSquare(i, j) && this.isValidTridentLightSquare(i, j)) {
+          validLightSquares.push([i, j]);
+        }
+      }
+    }
+
+    const selectedCoordsOne = validLightSquares[Math.random() * validLightSquares.length];
+    const selectedCoordsTwo = validLightSquares[Math.random() * validLightSquares.length];
+    const selected = [selectedCoordsOne, selectedCoordsTwo];
+
+    for (const [selectedRow, selectedCol] of selected) {
+      const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
+      this.board.getBoard()[selectedRow][selectedCol] = piece;
+      return piece;
+    }
   }
-
-  private placeDarkBishopPieces() {
-    
-  }
-
-  private placeLightBishopPieces() {
-    
-  }
-
-
 
   updateBoardDisplay(board: Board) : void {
 
