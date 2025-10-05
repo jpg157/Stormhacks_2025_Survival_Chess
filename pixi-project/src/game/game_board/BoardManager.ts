@@ -1,10 +1,10 @@
-import { Piece } from '../pieces/Piece';
 import { Bishop } from '../pieces/Bishop';
 import { Knight } from '../pieces/Knight';
 import { Queen } from '../pieces/Queen';
 import { Rook } from '../pieces/Rook';
 import { Trident } from '../pieces/Trident';
 import { Stag } from '../pieces/Stag';
+import { Piece } from '../pieces/Piece';
 
 // The board holds either a Piece or null (empty)
 export type Board = (Piece | null)[][];
