@@ -1,18 +1,103 @@
+import { PieceType } from "../enums/PieceType";
 import { Board } from "../game-logic/Board";
+import { Piece } from "../pieces/Piece";
 import { PieceManager } from "./PieceManager";
 
 export class BoardManager {
+  private static START_TILE = [2][2];
+  private static BOARD_SIZE = 5;
+  private static EVEN_DIVISOR = 2;
+
 
   private pieceManager: PieceManager;
+  
+  private board: Board;
+  // private pieceTypePool: Set<Piece>;
 
   constructor() {
     this.pieceManager = new PieceManager();
+      this.board = new Board(BoardManager.BOARD_SIZE, BoardManager.BOARD_SIZE);
   }
 
-  generateBoardPieces(board: Board): void {
+  // generateBoard(board: Board): void {
 
-    // this.pieceManager.createPiece();
+  //   // this.pieceManager.createPiece();
+  // }
+
+  populateBoard(board: Board): void {
+    const gameBoard: Piece[][] | null[][] = board.getBoard();
+
+    this.placeTwoDarkTridentPieces();
+
+    for (let i = 0; i < gameBoard.length; i++) {
+      for (let j = 0; j < gameBoard[j].length; j++) {
+        if (i == 2 && j == 2) {
+          continue;
+        }
+        
+        
+        
+        // const gridPos = [i, j];
+        // if (gridPos.length === BoardManager.INVALID_INIT_PIECE_POSITION.length && gridPos.every((v, k) => v === BoardManager.INVALID_INIT_PIECE_POSITION[k])) {
+          
+        // }
+      }
+    }
+    this.pieceManager.createPiece();
   }
+
+  private isDarkSquare(row: number, col: number): boolean {
+    return ((row + col) % BoardManager.EVEN_DIVISOR) === 0;
+  }
+
+  private isValidTridentDarkSquare(row: number, col: number): boolean {
+    if ( 
+      (row === 2 && col === 0) || // west
+      (row === 0 && col === 2) || // north
+      (row === 2 && col === 4) || // east
+      (row === 4 && col === 2)  // south
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  private placeTwoDarkTridentPieces() {
+    const validDarkSquares: [number, number][] = [];
+    
+    // Add valid dark squares to list
+    for (let i = 0; i < BoardManager.BOARD_SIZE; i++) {
+      for (let j = 0; j < BoardManager.BOARD_SIZE; j++) {
+        if (this.isDarkSquare(i, j) && this.isValidTridentDarkSquare(i, j)) {
+          validDarkSquares.push([i, j]);
+        }
+      }
+    }
+
+    const selectedCoordsOne = validDarkSquares [ Math.random() * validDarkSquares.length ];
+    const selectedCoordsTwo = validDarkSquares [ Math.random() * validDarkSquares.length ];
+    const selected = [selectedCoordsOne, selectedCoordsTwo];
+
+    for (const [selectedRow, selectedCol] of selected) {
+        const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
+        this.board.getBoard()[selectedRow][selectedCol] = piece;
+        return piece; 
+    }
+  }
+
+  private placeLightTridentPieces() {
+    
+  }
+
+  private placeDarkBishopPieces() {
+    
+  }
+
+  private placeLightBishopPieces() {
+    
+  }
+
+
 
   updateBoardDisplay(board: Board) : void {
 
@@ -22,7 +107,4 @@ export class BoardManager {
 
   }
 
-  isDarkSquare(row: number, col: number) {
-
-  }
 }
