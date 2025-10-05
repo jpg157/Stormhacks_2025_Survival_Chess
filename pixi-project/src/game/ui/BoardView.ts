@@ -133,16 +133,16 @@ export class BoardView {
     for (const target of targets) {
       // Create pulsing red overlay for danger tiles
       const dangerTile = new Graphics();
-      dangerTile.beginFill(0xff0000, 0.3); // Semi-transparent red
+      dangerTile.beginFill(0xff2222, 1.0); // Bright red, full opacity
       dangerTile.drawRect(0, 0, TILE, TILE);
       dangerTile.endFill();
       dangerTile.x = target.col * TILE;
       dangerTile.y = target.row * TILE;
 
-      // Add pulsing animation
-      const pulseSpeed = 0.05;
-      const minAlpha = 0.2;
-      const maxAlpha = 0.5;
+      // Add stronger pulsing animation
+      const pulseSpeed = 0.08; // Faster pulsing
+      const minAlpha = 0.1; // More dramatic fade out
+      const maxAlpha = 0.8; // Much brighter peak
       let increasing = true;
       
       const animate = () => {

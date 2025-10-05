@@ -1,4 +1,4 @@
-import { Container } from 'pixi.js';
+import { Container, Text, TextStyle } from 'pixi.js';
 import { createApp, centerStage } from './game/ui/app';
 import { loadPieceTextures } from './game/ui/assets';
 import { GameBoard } from './game/game_board/GameBoard';
@@ -16,6 +16,32 @@ async function start(): Promise<void> {
 
   const textures = await loadPieceTextures();
 
+  // Create game title
+  const gameTitle = new Text('SURVIVAL CHESS', new TextStyle({
+    fontFamily: 'Arial',
+    fontSize: 32,
+    fill: 0xffffff,
+    fontWeight: 'bold',
+    align: 'center'
+  }));
+  gameTitle.anchor.set(0.5, 0);
+  gameTitle.x = (TILE * 5) / 2; // Center above the 5x5 board
+  gameTitle.y = -60;
+
+  // Create objective subtitle
+  const objective = new Text('Save targeted pieces from danger zones before time runs out!', new TextStyle({
+    fontFamily: 'Arial',
+    fontSize: 16,
+    fill: 0xcccccc,
+    fontWeight: 'normal',
+    align: 'center',
+    wordWrap: true,
+    wordWrapWidth: TILE * 5 + 200 // Allow wrapping across board + UI width
+  }));
+  objective.anchor.set(0.5, 0);
+  objective.x = (TILE * 5) / 2;
+  objective.y = -25;
+
   const game = new GameBoard();
   const controller = new GameController(game);
   const view = new BoardView(controller, textures);
@@ -25,6 +51,8 @@ async function start(): Promise<void> {
   const boardSize = TILE * 5; // 5x5 board
   gameUI.position(boardSize + 20, 20);
 
+  root.addChild(gameTitle);
+  root.addChild(objective);
   root.addChild(view.root);
   root.addChild(gameUI.root);
 
