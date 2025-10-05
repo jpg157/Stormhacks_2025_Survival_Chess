@@ -18,6 +18,7 @@ export class BoardManager {
   constructor() {
     this.pieceManager = new PieceManager();
     this.board = new Board(BoardManager.BOARD_SIZE, BoardManager.BOARD_SIZE);
+    this.populateBoard()
     this.center = Math.floor(BoardManager.BOARD_SIZE / 2);
   }
 
