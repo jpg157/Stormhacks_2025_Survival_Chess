@@ -29,7 +29,7 @@ async function start(): Promise<void> {
   gameTitle.y = -60;
 
   // Create objective subtitle
-  const objective = new Text('Save targeted pieces from danger zones before time runs out!', new TextStyle({
+  const objective = new Text('Survive the waves by saving the targeted pieces!', new TextStyle({
     fontFamily: 'Arial',
     fontSize: 16,
     fill: 0xcccccc,
@@ -56,6 +56,61 @@ async function start(): Promise<void> {
   root.addChild(view.root);
   root.addChild(gameUI.root);
 
+  // Create "How To Play" section below the board
+  const howToPlayTitle = new Text('HOW TO PLAY', new TextStyle({
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fill: 0xffffff,
+    fontWeight: 'bold',
+    align: 'left'
+  }));
+  howToPlayTitle.x = 0;
+  howToPlayTitle.y = boardSize + 40;
+
+  const instructions = new Text(`🎯 OBJECTIVE:
+Save targeted pieces (red tinted) from danger zones (flashing red tiles) by 
+maneuvering the pieces using the empty square before time runs out!
+
+🎮 CONTROLS:
+• Click a piece to select it (yellow highlight)
+• Green dots show valid moves
+• Click a green dot to move the piece
+• Hover over tiles for blue outline
+
+⚡ GAMEPLAY:
+• Each wave targets 2-4 random pieces
+• Move ALL targeted pieces off danger tiles to survive
+• You have 3 lives (hearts) - lose one each time you fail
+• Wave times: 2 targets = 25s, 3 targets = 35s, 4 targets = 45s
+
+♟️ PIECE MOVEMENTS:
+• Queen (Q): Any adjacent empty tile
+• Rook (R): Adjacent Horizontal/vertical empty tile
+• Bishop (B): Adjacent Diagonal empty tile  
+• Knight (N): L-shape (2+1 squares)
+• Trident (T): Diagonally jumping over pieces to empty tile 
+• Stag (S): Horizontal/vertical jumping over pieces to empty tile
+
+💡 STRATEGY TIPS:
+• Plan multiple moves ahead
+• Use the restart button anytime to try again
+• Remember: pieces can't move onto occupied squares
+• Focus on the most difficult pieces to save first`, new TextStyle({
+    fontFamily: 'Arial',
+    fontSize: 14,
+    fill: 0xcccccc,
+    fontWeight: 'normal',
+    align: 'left',
+    wordWrap: true,
+    wordWrapWidth: boardSize + 320, // Span across board + UI width
+    lineHeight: 18
+  }));
+  instructions.x = 0;
+  instructions.y = boardSize + 75;
+
+  root.addChild(howToPlayTitle);
+  root.addChild(instructions);
+
   view.drawTiles();
   view.updatePieces();
 
@@ -64,6 +119,7 @@ async function start(): Promise<void> {
   waveManager.setCallbacks({
     onWaveStart: (wave) => {
       gameUI.showWaveStart(wave.waveNumber, wave.targets.length, wave.totalTime);
+      gameUI.updateLives(wave.livesRemaining); // Show current lives
       view.updatePieces(); // Refresh to show danger tiles and targeted pieces
     },
     onWaveEnd: (success, wave) => {
@@ -73,6 +129,9 @@ async function start(): Promise<void> {
         gameUI.showWaveFailure(wave.waveNumber);
       }
       view.updatePieces(); // Refresh to clear danger tiles
+    },
+    onLifeLost: (livesRemaining) => {
+      gameUI.showLifeLost(livesRemaining);
     },
     onGameOver: (finalWave) => {
       gameUI.showGameOver(finalWave);
@@ -84,6 +143,9 @@ async function start(): Promise<void> {
 
   // Set up start button callback
   gameUI.onStartButtonClick(() => {
+    // Stop current game if running
+    waveManager.stopGame();
+    
     // Regenerate board for new game
     game.regenerate();
     view.updatePieces();

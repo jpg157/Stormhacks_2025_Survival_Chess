@@ -8,16 +8,18 @@ export class GameUI {
   private statusText!: Text;
   private startButton!: Graphics;
   private startButtonText!: Text;
+  private livesContainer!: Container;
+  private hearts: Graphics[] = [];
 
   constructor() {
     this.setupUI();
   }
 
   private setupUI(): void {
-    // Create background panel
+    // Create background panel - increased height for better layout
     this.background = new Graphics();
     this.background.beginFill(0x1a1a1a, 0.9);
-    this.background.drawRoundedRect(0, 0, 300, 150, 10);
+    this.background.drawRoundedRect(0, 0, 300, 190, 10); // Increased from 180 to 190
     this.background.endFill();
     this.root.addChild(this.background);
 
@@ -43,7 +45,16 @@ export class GameUI {
     this.timerText.y = 50;
     this.root.addChild(this.timerText);
 
-    // Status text
+    // Lives container - positioned below timer with proper spacing
+    this.livesContainer = new Container();
+    this.livesContainer.x = 35; // Align with timer text
+    this.livesContainer.y = 95; // Below timer with spacing
+    this.root.addChild(this.livesContainer);
+
+    // Create 3 hearts
+    this.createHearts();
+
+    // Status text - moved further down to accommodate lives
     this.statusText = new Text('Click Start to begin!', new TextStyle({
       fontFamily: 'Arial',
       fontSize: 16,
@@ -52,16 +63,16 @@ export class GameUI {
       wordWrapWidth: 260
     }));
     this.statusText.x = 20;
-    this.statusText.y = 80;
+    this.statusText.y = 120; // Moved down from 110 to 120
     this.root.addChild(this.statusText);
 
-    // Start button
+    // Start button - moved down to accommodate new layout
     this.startButton = new Graphics();
     this.startButton.beginFill(0x4CAF50);
     this.startButton.drawRoundedRect(0, 0, 100, 30, 5);
     this.startButton.endFill();
     this.startButton.x = 180;
-    this.startButton.y = 110;
+    this.startButton.y = 150; // Moved down from 140 to 150
     this.startButton.eventMode = 'static';
     this.startButton.cursor = 'pointer';
     this.root.addChild(this.startButton);
@@ -76,6 +87,33 @@ export class GameUI {
     this.startButtonText.x = 50;
     this.startButtonText.y = 15;
     this.startButton.addChild(this.startButtonText);
+  }
+
+  private createHearts(): void {
+    this.hearts = [];
+    for (let i = 0; i < 3; i++) {
+      const heart = new Graphics();
+      
+      // Draw a simple heart shape using two circles and a triangle
+      heart.beginFill(0xff4444);
+      
+      // Left circle
+      heart.drawCircle(-6, -4, 8);
+      // Right circle  
+      heart.drawCircle(6, -4, 8);
+      // Bottom triangle point
+      heart.moveTo(-12, 2);
+      heart.lineTo(0, 16);
+      heart.lineTo(12, 2);
+      heart.closePath();
+      
+      heart.endFill();
+      heart.x = i * 30;
+      heart.y = 0;
+      
+      this.livesContainer.addChild(heart);
+      this.hearts.push(heart);
+    }
   }
 
   public updateWave(waveNumber: number): void {
@@ -120,16 +158,19 @@ export class GameUI {
     this.updateWave(waveNumber);
     this.updateTimer(timeLimit);
     this.updateStatus(`Wave ${waveNumber} started! Save ${targetsCount} pieces from danger!`);
-    this.showStartButton(false);
+    this.setStartButtonText('Restart Game');
+    this.showStartButton(true); // Keep button visible during gameplay
   }
 
   public showWaveSuccess(waveNumber: number): void {
     this.updateStatus(`Wave ${waveNumber} completed! Next wave incoming...`);
+    this.setStartButtonText('Restart Game');
+    this.showStartButton(true); // Keep button visible
   }
 
   public showWaveFailure(waveNumber: number): void {
     this.updateStatus(`Wave ${waveNumber} failed! Game Over.`);
-    this.setStartButtonText('Restart');
+    this.setStartButtonText('Play Again');
     this.showStartButton(true);
   }
 
@@ -137,6 +178,27 @@ export class GameUI {
     this.updateStatus(`Game Over! You survived ${finalWave} waves.`);
     this.setStartButtonText('Play Again');
     this.showStartButton(true);
+  }
+
+  public updateLives(livesRemaining: number): void {
+    for (let i = 0; i < this.hearts.length; i++) {
+      if (i < livesRemaining) {
+        this.hearts[i].tint = 0xffffff; // Red color for remaining lives
+        this.hearts[i].alpha = 1.0;
+      } else {
+        this.hearts[i].tint = 0x666666; // Gray color for lost lives
+        this.hearts[i].alpha = 0.5;
+      }
+    }
+  }
+
+  public showLifeLost(livesRemaining: number): void {
+    this.updateLives(livesRemaining);
+    if (livesRemaining > 0) {
+      this.updateStatus(`Life lost! ${livesRemaining} lives remaining. Next wave incoming...`);
+    } else {
+      this.updateStatus('All lives lost! Game Over.');
+    }
   }
 
   public position(x: number, y: number): void {

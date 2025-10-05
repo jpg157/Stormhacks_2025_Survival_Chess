@@ -12,6 +12,7 @@ export interface WaveData {
   targets: TargetedPiece[];
   timeRemaining: number;
   totalTime: number;
+  livesRemaining: number;
 }
 
 export class WaveManager {
@@ -22,12 +23,14 @@ export class WaveManager {
   private timeRemaining: number = 0;
   private totalTime: number = 10; // 10 seconds per wave initially
   private timer: number | null = null;
+  private livesRemaining: number = 3; // Player starts with 3 lives
   
   // Callbacks for game events
   private onWaveStartCallback?: (wave: WaveData) => void;
   private onWaveEndCallback?: (success: boolean, wave: WaveData) => void;
   private onGameOverCallback?: (finalWave: number) => void;
   private onTimerUpdateCallback?: (timeRemaining: number) => void;
+  private onLifeLostCallback?: (livesRemaining: number) => void;
 
   constructor(gameBoard: GameBoard) {
     this.gameBoard = gameBoard;
@@ -38,15 +41,18 @@ export class WaveManager {
     onWaveEnd?: (success: boolean, wave: WaveData) => void;
     onGameOver?: (finalWave: number) => void;
     onTimerUpdate?: (timeRemaining: number) => void;
+    onLifeLost?: (livesRemaining: number) => void;
   }): void {
     this.onWaveStartCallback = callbacks.onWaveStart;
     this.onWaveEndCallback = callbacks.onWaveEnd;
     this.onGameOverCallback = callbacks.onGameOver;
     this.onTimerUpdateCallback = callbacks.onTimerUpdate;
+    this.onLifeLostCallback = callbacks.onLifeLost;
   }
 
   public startGame(): void {
     this.currentWave = 0;
+    this.livesRemaining = 3;
     this.isActive = true;
     this.startNextWave();
   }
@@ -56,12 +62,17 @@ export class WaveManager {
       waveNumber: this.currentWave,
       targets: [...this.targets],
       timeRemaining: this.timeRemaining,
-      totalTime: this.totalTime
+      totalTime: this.totalTime,
+      livesRemaining: this.livesRemaining
     };
   }
 
   public getTargets(): TargetedPiece[] {
     return [...this.targets];
+  }
+
+  public getLivesRemaining(): number {
+    return this.livesRemaining;
   }
 
   public isWaveActive(): boolean {
@@ -202,10 +213,22 @@ export class WaveManager {
         }
       }, 2000);
     } else {
-      // Game over
-      this.isActive = false;
-      this.onGameOverCallback?.(this.currentWave);
+      // Lose a life
+      this.livesRemaining--;
+      this.onLifeLostCallback?.(this.livesRemaining);
       
+      if (this.livesRemaining <= 0) {
+        // Game over - no lives left
+        this.isActive = false;
+        this.onGameOverCallback?.(this.currentWave);
+      } else {
+        // Still have lives - continue with next wave after a delay
+        setTimeout(() => {
+          if (this.isActive) {
+            this.startNextWave();
+          }
+        }, 2000);
+      }
     }
   }
 
