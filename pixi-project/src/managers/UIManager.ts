@@ -1,5 +1,5 @@
 import { Application, Container } from "pixi.js";
-import { AssetManager } from "./AssetManager";
+// import { AssetManager } from "./AssetManager";
 import { BoardContainer } from "../ui/containers/BoardContainer";
 import { TutorialContainer } from "../ui/containers/TutorialContainer";
 import { Tile } from "../game-logic/Tile";
@@ -7,18 +7,18 @@ import { BackgroundContainer } from "../ui/containers/BackgroundContainer";
 
 export class UIManager {
 
-  private assetManager: AssetManager;
+  // private assetManager: AssetManager;
 
   constructor() {
-    this.assetManager = new AssetManager();
+    // this.assetManager = new AssetManager();
   }
 
   renderGame(
     app: Application, 
     boardData: Tile[][]
   ) {
-    const assetManager = new AssetManager();
-    assetManager.init();
+    // const assetManager = new AssetManager();
+    // assetManager.init();
 
     // RENDER UI
 

@@ -135,10 +135,15 @@ export class BoardManager {
       }
     }
 
-    const selectedCoordsOne = validDarkSquares [ Math.floor(Math.random() * validDarkSquares.length) ];
-    const selectedCoordsTwo = validDarkSquares [ Math.floor(Math.random() * validDarkSquares.length) ];
+    const coordIndexOne = Math.floor(Math.random() * validDarkSquares.length);
+    validDarkSquares.splice(coordIndexOne, 1);
+    
+    const coordIndexTwo = Math.floor(Math.random() * validDarkSquares.length);
+
+    const selectedCoordsOne = validDarkSquares[coordIndexOne];
+    const selectedCoordsTwo = validDarkSquares[coordIndexTwo];
+
     const selected = [selectedCoordsOne, selectedCoordsTwo];
-   
 
     for (const [selectedRow, selectedCol] of selected) {
         const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
@@ -157,23 +162,23 @@ export class BoardManager {
       }
     }
 
-    const selectedCoordsOne = validLightSquares[Math.floor(Math.random() * validLightSquares.length)];
-    const selectedCoordsTwo = validLightSquares[Math.floor(Math.random() * validLightSquares.length)];
+    const coordIndexOne = Math.floor(Math.random() * validLightSquares.length);
+    validLightSquares.splice(coordIndexOne, 1);
+    
+    const coordIndexTwo = Math.floor(Math.random() * validLightSquares.length);
+
+    const selectedCoordsOne = validLightSquares[coordIndexOne];
+    const selectedCoordsTwo = validLightSquares[coordIndexTwo];
+
     const selected = [selectedCoordsOne, selectedCoordsTwo];
 
-    console.log("b4 for loop");
-
-
     selected.forEach((coords) => {
-      console.log("in for loop");
-
       const selectedRow = coords[0];
       const selectedCol = coords[1];
       
       const piece = this.pieceManager.createPiece(PieceType.TRIDENT, selectedRow, selectedCol);
       this.board.getBoard()[selectedRow][selectedCol].setPiece(piece);
 
-      console.log("before return piece");
       return piece;
     });
   }

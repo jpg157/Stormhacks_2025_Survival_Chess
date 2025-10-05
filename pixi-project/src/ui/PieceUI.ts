@@ -11,10 +11,9 @@ export class PieceUi {
     this.col = col;
 
     const label: string = `piece${row}${col}`;
-
+    const chessPieceAssets = Assets.loadBundle("chessPieces");
+    
     this.sprite = new Sprite({ label: label, anchor: 0.5 });
-    const texture = Assets.get(pieceType);
-    this.sprite.texture = texture;
   }
 
   getRow(): number {
