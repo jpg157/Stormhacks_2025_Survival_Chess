@@ -10,8 +10,9 @@ export class BoardTile {
     this.row = row;
     this.col = col;
     this.color = color;
+    const label: string = "Tile`${row} ${col}`";
     // @@TODO: set texture based on color
-    this.sprite = new Sprite();
+    this.sprite = new Sprite({label: label});
   }
 
   getRow(): number {
