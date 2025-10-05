@@ -1,6 +1,6 @@
 import { Application } from "pixi.js";
 import { AssetManager } from "./managers/AssetManager";
-import { Game } from "./Game";
+import { GameManager } from "./managers/GameManager";
 
 (async () => {
   // Create a new application
@@ -12,31 +12,26 @@ import { Game } from "./Game";
   // Append the application canvas to the document body
   document.getElementById("pixi-container")!.appendChild(app.canvas);
 
-  // const game: Game = new Game();
+  const gameManager: GameManager = new GameManager();
+  gameManager.startGame(app);
 
-  const am = await new AssetManager().init();
+  // // TEMP - to debug assets
+  // const spriteSize = 64; // replace with your actual sprite size
+  // const columns = 5;
+  // const padding = 30;
+  // let i = 0;
 
-  const dict = am.getAssets();
+  // for (const key in dict) {
+  //   const sprite = dict[key];
 
+  //   const row = Math.floor(i / columns);
+  //   const col = i % columns;
+
+  //   sprite.x = col * (spriteSize + padding);
+  //   sprite.y = row * (spriteSize + padding);
+
+  //   app.stage.addChild(sprite);
+  //   i++;
+  // }
   // TEMP - to debug assets
-  const spriteSize = 64; // replace with your actual sprite size
-  const columns = 5;
-  const padding = 30;
-  let i = 0;
-
-  for (const key in dict) {
-    const sprite = dict[key];
-
-    const row = Math.floor(i / columns);
-    const col = i % columns;
-
-    sprite.x = col * (spriteSize + padding);
-    sprite.y = row * (spriteSize + padding);
-
-    app.stage.addChild(sprite);
-    i++;
-  }
-  // TEMP - to debug assets
-
-  // app.stage.addChild(sprite);
 })();

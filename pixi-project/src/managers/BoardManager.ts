@@ -10,7 +10,6 @@ export class BoardManager {
   private static BOARD_SIZE = 5;
   private static EVEN_DIVISOR = 2;
 
-
   private pieceManager: PieceManager;
 
   public readonly board: Board;
@@ -26,6 +25,10 @@ export class BoardManager {
 
   //   // this.pieceManager.createPiece();
   // }
+
+  getBoardData(): Piece[][] | null[][] {
+    return this.board.getBoard();
+  }
 
   // help me randomly place pieces on the board that are not already occupied and not the start tile
   populateBoard(): void {
@@ -176,7 +179,6 @@ export class BoardManager {
         }
       }
     }
-
   }
 
   handleTileClick(row: number, col: number, board: Board): void {
@@ -190,7 +192,6 @@ export class BoardManager {
     }
 
     this.updateBoardDisplay(board);
-    
   }
 
 }

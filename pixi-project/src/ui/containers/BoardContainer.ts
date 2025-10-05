@@ -1,10 +1,15 @@
 import { Container, Sprite } from "pixi.js";
+import { Piece } from "../../pieces/Piece";
 
 export class BoardContainer {
-  container: Container;
+  private container: Container;
 
-  constructor() {
+  constructor(boardData: Piece[][] | null[][]) {
     this.container = new Container();
+  }
+
+  getContainer(): Container {
+    return this.container;
   }
 
   addToContainer(sprite: Sprite) {

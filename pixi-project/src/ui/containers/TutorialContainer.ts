@@ -1,11 +1,16 @@
 import { Container, Sprite } from "pixi.js";
 
 export class TutorialContainer {
-  container: Container;
+
+  private container: Container;
 
   constructor() {
     this.container = new Container();
     this.setupContainer();
+  }
+
+  getContainer(): Container {
+    return this.container;
   }
 
   private setupContainer() {
